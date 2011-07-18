@@ -81,6 +81,23 @@ class iContact {
 	}
 	
 	/**
+	 * Delete a contact
+	 * @param string $contactId
+	 * @return boolean $success
+	 */
+	public function deleteContact($contactId) {
+		$success = false;
+		$response = $this->callResource("/a/{$this->accountId}/c/{$this->clientFolderId}/contacts/$contactId",'DELETE');
+
+		if ($response['code'] == self::STATUS_CODE_SUCCESS) {
+			$success = true;
+		} else {
+			throw new Exception('iContact returned ' . $response['code']);
+		}
+		if($this->debugMode) $this->dump($response);
+		return $success;		
+	}
+	/**
 	 * Create one or more lists
 	 * @param array $lists
 	 * @return string listId of new created list
