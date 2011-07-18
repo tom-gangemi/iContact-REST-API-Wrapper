@@ -184,6 +184,23 @@ class iContact {
 	}
 	
 	/**
+	 * Send an email to a list or lists
+	 * @param String $messageId
+	 * @param String $listId can be a comma seperated list of listIds
+	 */
+	public function sendEmail($messageId, $listId) {
+		$response = $this->callResource("/a/{$this->accountId}/c/{$this->clientFolderId}/sends",'POST', array(
+			array (
+				'messageId'			=> $messageId,
+				'includeListIds'	=> $listId,
+			)
+		));
+		if ($response['code'] != self::STATUS_CODE_SUCCESS) {
+			throw new Exception('iContact returned ' . $response['code']);
+		}
+		if($this->debugMode) $this->dump($response);		
+	}
+	/**
 	 * Function to make the curl request
 	 * @param string $url
 	 * @param type $method
